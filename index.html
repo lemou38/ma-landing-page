@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Abderahmen Lemou — Tech Creator</title>
-<meta name="description" content="Abderahmen Lemou — Tech creator, telecommunications engineering student and digital marketer. Discover AI tools, student resources, student campuce, student campuce ambassador, campuce jobs, career opportunities and more.">
+  <meta name="description" content="Abderahmen Lemou — Tech creator, telecommunications engineering student and digital marketer. Discover AI tools, student resources, student campuce, student campuce ambassador, campuce jobs, career opportunities and more.">
+  <meta property="og:title" content="Abderahmen Lemou — Tech Creator">
+  <meta property="og:description" content="Tech creator, engineering student and digital marketer sharing AI tools, resources and opportunities.">
+  <meta property="og:url" content="https://lemou-abderahmen.tech">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://lemou-abderahmen.tech/pict/Abderahmen.PNG">
+  <link rel="canonical" href="https://lemou-abderahmen.tech/">
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -859,21 +865,89 @@
       }
       .btn, .resource-card, .social { transition: none; }
     }
-    /* WHAT I DO - FINAL */
+/* ===== CREDENTIALS GRID ===== */
+
 .credentials {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 16px !important;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
+/* ===== CARD ===== */
+
 .credential {
-  min-width: 0;
-  min-height: 180px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Hover animation */
+.credential:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Glow */
+.credential::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -100px;
+  right: -100px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  filter: blur(60px);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.credential:hover::before {
+  opacity: 0.12;
+}
+
+/* Icon */
+.credential i {
+  transition:
+    transform 0.4s ease,
+    color 0.3s ease;
+}
+
+.credential:hover i {
+  transform: translateY(-4px) scale(1.12);
+  color: var(--accent);
+}
+
+/* Title */
+.credential strong {
+  transition: color 0.3s ease;
+}
+
+.credential:hover strong {
+  color: var(--accent);
+}
+
+/* Description */
+.credential span {
+  transition: transform 0.35s ease;
+}
+
+.credential:hover span {
+  transform: translateX(3px);
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px) {
+  .credentials {
+    grid-template-columns: 1fr;
+  }
 }
   </style>
 </head>
@@ -989,7 +1063,7 @@
       <div class="photo-card">
 
         <img
-          src="pict\Abderahmen.PNG"
+          src="pict/Abderahmen.PNG"
           alt="Abderahmen Lemou"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
         >
@@ -1146,7 +1220,7 @@
               <h3>Connecting students with <span class="campus-unique">opportunities</span>, experiences and a community built to grow.</h3>
             </div>
                   <img 
-                  src="pict\khotwatour.png" 
+                  src="pict/khotwatour.png" 
                   alt="Ambassadeur Djezzy Campuce"
                   style="max-width: 100%; height: auto; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
                 />
@@ -1164,7 +1238,7 @@
   
   <a href="https://student-campuce.dz/" target="_blank">
   <img 
-    src="pict\moi-student-campuce.PNG" 
+    src="pict/moi-student-campuce.PNG" 
     alt="Ambassadeur Djezzy Campuce"
     style="max-width: 100%; height: auto; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
   />
