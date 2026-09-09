@@ -505,37 +505,89 @@
       line-height: 1.45;
     }
 
-  .credential {
-  min-height: 180px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--white-soft);
+/* ===== CREDENTIALS GRID ===== */
+
+.credentials {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
+/* ===== CARD ===== */
+
+.credential {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Hover animation */
+.credential:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Glow */
+.credential::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -100px;
+  right: -100px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  filter: blur(60px);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.credential:hover::before {
+  opacity: 0.12;
+}
+
+/* Icon */
 .credential i {
-  width: 21px;
-  height: 21px;
+  transition:
+    transform 0.4s ease,
+    color 0.3s ease;
+}
+
+.credential:hover i {
+  transform: translateY(-4px) scale(1.12);
   color: var(--accent);
-  margin-bottom: 35px;
-  flex-shrink: 0;
 }
 
+/* Title */
 .credential strong {
-  display: block;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 15px;
-  margin: 0;
+  transition: color 0.3s ease;
 }
 
+.credential:hover strong {
+  color: var(--accent);
+}
+
+/* Description */
 .credential span {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted-2);
-  font-size: 12px;
+  transition: transform 0.35s ease;
+}
+
+.credential:hover span {
+  transform: translateX(3px);
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px) {
+  .credentials {
+    grid-template-columns: 1fr;
+  }
 }
 
     /* CAMPUS */
@@ -780,8 +832,51 @@
     margin-top: 5px;
     line-height: 1.4;
   }
+  /* WHAT I DO — Mobile Hover / Touch Effect */
+@media (max-width: 768px) {
+
+  .credential {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background-color 0.25s ease;
+    cursor: pointer;
+    will-change: transform;
+  }
+
+  /* Hover */
+  .credential:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Touch / press on mobile */
+  .credential:active {
+    transform: translateY(-3px) scale(0.98);
+  }
+
+  /* Keyboard accessibility */
+  .credential:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    outline: none;
+  }
+
+  /* Icon animation */
+  .credential i {
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .credential:hover i,
+  .credential:focus-visible i {
+    transform: translateY(-3px) scale(1.08);
+  }
 }
 }
+
     @media (max-width: 520px) {
       section { padding-block: 70px; }
 
@@ -1259,7 +1354,7 @@
 
         <div class="vlog-box reveal">
           <div>
-            <span class="eyebrow">🎥 Vlogs & Content</span>
+            <span class="eyebrow">Vlogs & Content</span>
             <h3>Tech is what I share.<br>The journey is what I document.</h3>
             <p>Follow me for practical content, discoveries and behind-the-scenes moments.</p>
           </div>
