@@ -34,6 +34,12 @@
       --accent: #a7ff4f;
       --accent-soft: rgba(167,255,79,.10);
       --white-soft: rgba(255,255,255,.04);
+      --glow-color: #a7ff4f;
+      --glow-soft: rgba(167,255,79,0.18);
+      --glow-medium: rgba(167,255,79,0.28);
+      --glow-strong: rgba(167,255,79,0.42);
+      --card-glass-bg: rgba(17, 20, 25, 0.78);
+      --card-glass-border: rgba(255,255,255,0.08);
       --radius: 24px;
       --max: 1080px;
     }
@@ -457,7 +463,7 @@
   flex-direction: column;
   justify-content: flex-start;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--card);
   transition: .2s ease;
 }
@@ -518,6 +524,7 @@
 .credential {
   position: relative;
   overflow: hidden;
+  border-radius: var(--radius);
   transition:
     transform 0.35s ease,
     border-color 0.35s ease,
@@ -592,17 +599,37 @@
 
     /* CAMPUS */
     .campus {
-      display: grid;
-      grid-template-columns: 1fr .8fr;
+      display: flex;
       gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(167,255,79,.45) rgba(255,255,255,.06);
+    }
+
+    .campus::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .campus::-webkit-scrollbar-track {
+      background: rgba(255,255,255,.06);
+      border-radius: 999px;
+    }
+
+    .campus::-webkit-scrollbar-thumb {
+      background: rgba(167,255,79,.45);
+      border-radius: 999px;
     }
 
     .campus-main,
     .campus-side {
+      flex: 0 0 420px;
       padding: 28px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: var(--card);
+      scroll-snap-align: start;
     }
 
     .campus-main {
@@ -665,6 +692,8 @@
 
     /* VLOG */
     .vlog-box {
+      position: relative;
+      overflow: hidden;
       padding: 30px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -695,7 +724,7 @@
       text-align: center;
       padding: 62px 25px;
       border: 1px solid var(--line-hover);
-      border-radius: 30px;
+      border-radius: var(--radius);
       background:
         radial-gradient(circle at 50% 100%, rgba(167,255,79,.10), transparent 28rem),
         #101317;
@@ -786,6 +815,15 @@
   .resource-grid {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+  }
+
+  .campus {
+    padding-bottom: 6px;
+  }
+
+  .campus-main,
+  .campus-side {
+    flex-basis: 82vw;
   }
 
   .resource-card {
@@ -1044,6 +1082,95 @@
     grid-template-columns: 1fr;
   }
 }
+
+    /* ===== INTERACTIVE CARD GLOW ===== */
+    .resource-card,
+    .credential,
+    .campus-main,
+    .campus-side,
+    .vlog-box,
+    .contact-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--card-glass-border);
+      border-radius: var(--radius);
+      background: var(--card-glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.02),
+        0 12px 28px rgba(0,0,0,0.22);
+      transition:
+        border-color 0.3s ease-in-out,
+        background-color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out,
+        transform 0.3s ease-in-out;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .resource-card::after,
+    .credential::after,
+    .campus-main::after,
+    .campus-side::after,
+    .vlog-box::after,
+    .contact-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: radial-gradient(circle at top right, var(--glow-soft), transparent 42%);
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+    }
+
+    .resource-card:hover,
+    .resource-card:active,
+    .credential:hover,
+    .credential:active,
+    .campus-main:hover,
+    .campus-main:active,
+    .campus-side:hover,
+    .campus-side:active,
+    .vlog-box:hover,
+    .vlog-box:active,
+    .contact-card:hover,
+    .contact-card:active {
+      border-color: rgba(167,255,79,0.8);
+      background: rgba(21,25,31,0.9);
+      box-shadow:
+        0 0 0 1px rgba(167,255,79,0.18),
+        0 0 18px rgba(167,255,79,0.22),
+        0 0 38px rgba(167,255,79,0.14),
+        0 18px 40px rgba(0,0,0,0.30);
+      transform: scale(1.02);
+    }
+
+    .resource-card:hover::after,
+    .resource-card:active::after,
+    .credential:hover::after,
+    .credential:active::after,
+    .campus-main:hover::after,
+    .campus-main:active::after,
+    .campus-side:hover::after,
+    .campus-side:active::after,
+    .vlog-box:hover::after,
+    .vlog-box:active::after,
+    .contact-card:hover::after,
+    .contact-card:active::after {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .resource-card,
+      .credential,
+      .campus-main,
+      .campus-side,
+      .vlog-box,
+      .contact-card {
+        transition: none;
+      }
+    }
   </style>
 </head>
 
@@ -1312,33 +1439,60 @@
           <div class="campus-main reveal">
             <div>
               <span class="campus-label">Djezzy STUDENT CAMPUCE</span>
-              <h3>Connecting students with <span class="campus-unique">opportunities</span>, experiences and a community built to grow.</h3>
             </div>
-                  <img 
-                  src="pict/khotwatour.png" 
-                  alt="Ambassadeur Djezzy Campuce"
-                  style="max-width: 100%; height: auto; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
-                />
+            <img
+              src="pict/khotwatour.png"
+              alt="Ambassadeur Djezzy Campuce"
+            />
+            <p style="color: var(--muted); font-size: 14px; margin-top: 15px; margin-bottom: 0;">
+              Connecting students with <span class="campus-unique">opportunities</span>, experiences and a community built to grow.
+            </p>
           </div>
 
-<div class="campus-main reveal">
-   <div>
+          <div class="campus-main reveal">
+            <div>
               <span class="campus-label">STUDENT CAMPUCE Ambassador</span>
-              <h3>
-                   Proud to be part of an 
-                  <span class="campus-unique">ecosystem</span> 
-                      built around students and opportunities.
-              </h3>
             </div>
-  
-  <a href="https://student-campuce.dz/" target="_blank">
-  <img 
-    src="pict/moi-student-campuce.PNG" 
-    alt="Ambassadeur Djezzy Campuce"
-    style="max-width: 100%; height: auto; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
-  />
-  </a>
-</div>
+
+            <a href="https://student-campuce.dz/" target="_blank">
+              <img
+                src="pict/student-campuce-ambassador.png"
+                alt="Student Campuce Ambassador"
+                style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
+              />
+            </a>
+            <p style="color: var(--muted); font-size: 14px; margin-top: 15px; margin-bottom: 0;">
+              Proud to be part of an <span class="campus-unique">ecosystem</span> built around students and opportunities.
+            </p>
+          </div>
+
+          <div class="campus-main reveal">
+            <div>
+              <span class="campus-label">CAMPUE JOBS</span>
+            </div>
+            <img
+              src="pict/campue-jobs-pict.png"
+              alt="Campue Jobs"
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
+            />
+            <p style="color: var(--muted); font-size: 14px; margin-top: 15px; margin-bottom: 0;">
+              Discover internships, student jobs and <span class="campus-unique"> practical opportunities</span> to grow your experience.
+            </p>
+          </div>
+
+          <div class="campus-main reveal">
+            <div>
+              <span class="campus-label">Progress Application</span>
+            </div>
+            <img
+              src="pict/maquette-smartphone-progress.png"
+              alt="Progress Application"
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; margin-top: 15px; display: block; align-self: center;"
+            />
+            <p style="color: var(--muted); font-size: 14px; margin-top: 15px; margin-bottom: 0;">
+             We hope to see your application turn  <span class="campus-unique">green</span>, your first step toward success.
+            </p>
+          </div>
         </div>
       </div>
     </section>
